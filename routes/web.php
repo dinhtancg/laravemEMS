@@ -26,3 +26,15 @@ Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::prefix('admin')->group(function () {
+    Route::get('/', 'Admin\AdminController@index')->name('admin.index');
+    Route::prefix('category')->group(function (){
+        Route::get('', 'Admin\CategoryController@index')->name('admin.category.index');
+        Route::get('create','Admin\CategoryController@create')->name('admin.category.create');
+        Route::post('create', 'Admin\CategoryController@createCategory')-> name('admin.category.createCategory');
+        Route::get('edit/{id}', 'Admin\CategoryController@edit')->name('admin.category.edit');
+        Route::delete('/{id}', 'Admin\CategoryController@destroy')->name('admin.category.destroy');
+    });
+
+});
