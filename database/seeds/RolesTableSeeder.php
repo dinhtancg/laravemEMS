@@ -15,26 +15,46 @@ class RolesTableSeeder extends Seeder
         $roles = [
             [
                 'id' => '1',
-                'name' => 'root',
+                'name' => 'Root',
                 'created_at' => Carbon::now(),
+                'slug' => 'root',
+                'permissions' =>  json_encode( array(
+                    "create-post" => true,
+                    "update-post" => true,
+                )),
             ],
             [
                 'id' => '2',
-                'name' => 'secrectory',
+                'name' => 'Secrectory',
                 'created_at' => Carbon::now(),
+                'slug' => 'secrectory',
+                'permissions' => json_encode(  array(
+                    "publish-post" => true,
+                )),
             ],
             [
                 'id' => '3',
-                'name' => 'editor',
+                'name' => 'Editor',
                 'created_at' => Carbon::now(),
+                'slug' => 'editor',
+                'permissions' => json_encode( array(
+                    "update-post" => true,
+                    "confirm-post" => true,
+                )),
             ],
             [
                 'id' => '4',
-                'name' => 'author',
+                'name' => 'Author',
+                'slug' => 'author',
+                'permissions' =>  json_encode( array(
+                    "update-post" => true,
+                    "create-post" => true,
+                )),
                 'created_at' => Carbon::now(),
             ],
         ];
-        DB::table('roles')->truncate();
+
+        DB::table('roles')->delete();
         foreach ($roles as $role) {
             DB::table('roles')->insert($role);
         };

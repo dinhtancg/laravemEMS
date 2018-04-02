@@ -15,15 +15,16 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('category_ID');
+            $table->unsignedInteger('category_id');
             $table->string('title');
             $table->string('content');
-            $table->string('author');
+            $table->unsignedInteger('user_id');
             $table->string('slug');
-            $table->boolean('confirm')->default('0');
-            $table->boolean('publish')->default('0');
+            $table->boolean('confirmed')->default(false);
+            $table->boolean('published')->default(false);
             $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

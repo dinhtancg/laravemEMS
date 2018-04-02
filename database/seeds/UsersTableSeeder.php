@@ -42,7 +42,7 @@ class UsersTableSeeder extends Seeder
                 'created_at' => Carbon::now(),
             ],
         ];
-        DB::table('users')->truncate();
+        DB::table('users')->delete();
         foreach ($users as $user) {
             DB::table('users')->insert($user);
         };
