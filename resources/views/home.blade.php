@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    You are logged admin!
+                    Homepage!
                 </div>
             </div>
         </div>
