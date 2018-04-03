@@ -14,7 +14,7 @@
                     </div>
 
                     <div class="panel-body">
-                        <form method="post" action="{{ route('admin.article.createArticle') }}">
+                        <form method="post" action="{{ route('admin.article.createArticle') }}" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             @if ($article)
                                 <input type="hidden" name="id" value="{{ $article->id }}" />

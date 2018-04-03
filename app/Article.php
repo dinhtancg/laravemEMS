@@ -30,7 +30,7 @@ class Article extends Model
     public static function getIndex($search = null, $cateId = null, $status = null, $dateForm = null, $dateTo = null)
     {
         $query = Article::select('articles.*', 'categories.name')
-            ->join('categories', 'articles.cate_id', '=', 'categories.id')
+            ->join('categories', 'articles.cate_id', '=', 'categories.id');
 //            ->where('articles.status', '=', is_null($status) ? self::STATUS_ACTIVE : $status);
         if (!empty($categoryId)) {
             $query->where('articles.category_id', '=', $categoryId);

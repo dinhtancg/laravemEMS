@@ -47,7 +47,7 @@ class ArticleController extends Controller
         } else {
             $request->validate([
                 'title' => "required|max:255|unique:articles,title,NULL,id",
-                'thumbnail'=>"required|image|mimes:jpg,png,jpeg,gif,svg|max:1000",
+                'thumbnail'=>["required","image"],
                 'content' => "required",
             ]);
         }
@@ -63,7 +63,8 @@ class ArticleController extends Controller
         $article->title = $request->title;
         if ($request->hasFile('thumbnail')) {
         $image = $request->file('thumbnail');
-                $path = public_path().'uploads/images/news/';
+                $path = storage_path().'/uploads/images/news/';
+                dd($path);
                 $filename = time() . '.' . $image->getClientOriginalExtension();
                 if (!file_exists($path)) {
                     \File::makeDirectory($path, $mode = 0777);
