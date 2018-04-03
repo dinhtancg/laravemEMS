@@ -43,9 +43,9 @@ class CategoriesTableSeeder extends Seeder
                 'created_at' => Carbon::now(),
             ],
         ];
-        DB::table('category')->truncate();
+        DB::table('categories')->truncate();
         foreach ($categories as $category) {
-            DB::table('category')->insert($category);
+            DB::table('categories')->insert($category);
         };
     }
 }
