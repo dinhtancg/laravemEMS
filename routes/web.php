@@ -28,5 +28,19 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function(){
         Route::get('edit/{id}', 'Admin\CategoryController@edit')->name('admin.category.edit');
         Route::delete('/{id}', 'Admin\CategoryController@destroy')->name('admin.category.destroy');
     });
+    Route::prefix('articles')->group(function (){
+        Route::get('', 'Admin\ArticleController@index')->name('admin.article.index');
+        Route::get('create','Admin\ArticleController@create')->name('admin.article.create');
+        Route::post('create', 'Admin\ArticleController@createArticle')-> name('admin.article.createArticle');
+        Route::get('edit/{id}', 'Admin\ArticleController@edit')->name('admin.article.edit');
+        Route::delete('/{id}', 'Admin\ArticleController@destroy')->name('admin.article.destroy');
+    });
+    Route::prefix('users')->group(function (){
+        Route::get('','Admin\UsersController@index')->name('admin.user.index');
+        Route::get('create','Admin\UsersController@create')->name('admin.user.create');
+        Route::post('create', 'Admin\UsersController@createUser')-> name('admin.user.createUser');
+        Route::get('edit/{id}', 'Admin\UsersController@edit')->name('admin.user.edit');
+        Route::delete('/{id}', 'Admin\UsersController@destroy')->name('admin.user.destroy');
+    });
 
 });
