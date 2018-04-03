@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Help;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Article;
 use App\Category;
+use Auth;
 
 class ArticleController extends Controller
 {
@@ -16,7 +18,8 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return view('admin.article.index');
+        $articles = Article::paginate(Article::PAGINATE_LIMIT);
+        return view('admin.article.index', ['articles' => $articles]);
     }
 
     /**
@@ -47,7 +50,7 @@ class ArticleController extends Controller
         } else {
             $request->validate([
                 'title' => "required|max:255|unique:articles,title,NULL,id",
-                'thumbnail'=>["required","image"],
+                'thumbnail'=>["required","image", "mimes:jpg,png,jpeg,gif,svg"],
                 'content' => "required",
             ]);
         }
@@ -59,18 +62,20 @@ class ArticleController extends Controller
         } else {
             $article = new Article();
         }
-        $article->category_id = $request-> category_id;
+        $article->category_id = $request-> category;
         $article->title = $request->title;
+        $article->content = $request->content;
+        $article->user_id = Auth::user()->id;
+        $article->slug = Help::generateSlug($request->title);
         if ($request->hasFile('thumbnail')) {
         $image = $request->file('thumbnail');
-                $path = storage_path().'/uploads/images/news/';
-                dd($path);
+                $path = storage_path().'/app/public/images/thumbnails/';
                 $filename = time() . '.' . $image->getClientOriginalExtension();
                 if (!file_exists($path)) {
-                    \File::makeDirectory($path, $mode = 0777);
+                    \File::makeDirectory($path, $mode = 0777, true);
                 }
                 $upload = $image->move($path, $filename);
-                $article->thumbnail = $path . $filename;
+                $article->thumbnail = 'storage/images/thumbnails'. $filename;
                 if (!$upload) {
                     return redirect()->route('admin.article.index')->with('error', 'Upload file false');
                 }
@@ -147,6 +152,13 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $target = Article::find($id);
+        if ($target) {
+            $target->delete();
+            return redirect()->route('admin.article.index')
+                ->with('success', 'Article has been deleted successfully');
+        }
+        return redirect()->route('admin.article.index')
+            ->with('error', 'Article not found');
     }
 }

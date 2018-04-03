@@ -5,7 +5,7 @@ namespace App;
 
 class Help
 {
-    const MAX_CHAR =  15;
+    const MAX_CHAR =  50;
 
     /**
      * Get sort description
