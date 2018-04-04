@@ -36,11 +36,12 @@
                                 <label for="img-thumbnail">Image thumbnail</label>
                                 <input type="file" id="img-thumbnail" name="thumbnail" value="">
                                 @if ($article)
-                                    <img src="{{ asset($article->thumbnail) }}" alt="" width="200px" height="200px">
+                                    <img class="thumbnail" src="{{ asset($article->thumbnail) }}" alt="" width="150px" height="150px">
                                 @endif
                                 @if ($errors->has('thumbnail'))
                                     <p class="text-danger">{{ $errors->first('thumbnail')}}</p>
                                 @endif
+
                             </div>
                             <div class="form-group">
                                 <label for="content">Content</label>
@@ -51,28 +52,29 @@
                             </div>
                             @can('confirm-article')
                             <div class="form-group">
+                                <label for="comnment">Comment</label>
+                                <textarea class="form-control" rows="5"  name = "comment"> {{ $article ? old('comment', $article->comment) : old('comment', '') }}</textarea>
+                                @if ($errors->has('comment'))
+                                    <p class="text-danger">{{ $errors->first('comment')}}</p>
+                                @endif
+                            </div>
+                            <div class="form-group">
                                 <label for="confirm">Confirm</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="confirm" value= true {{ !$article || old('confirm', $article->confirmed) == true ? 'checked' : '' }}>
-                                    Comfirm
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="confirm" value="false" {{ $article && old('confirm', $article->confirmed) == false ? 'checked' : '' }}>
-                                    Unconfirm
-                                </div>
+                                <select class="form-control" id="confirm" name="confirmed">
+                                    <option value='0'>Unconfirm</option>
+                                    <option value='1'>Confirm</option>
+
+                                </select>
                             </div>
                             @endcan
                             @can('publish-article')
                                 <div class="form-group">
                                     <label for="publish">Publish</label>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="publish" value= true {{ !$article || old('confirm', $article->published) == true ? 'checked' : '' }}>
-                                        Publish
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="publish" value=false {{ $article && old('confirm', $article->published) == false ? 'checked' : '' }}>
-                                        Unpublish
-                                    </div>
+                                    <select class="form-control" id="publish" name="published">
+                                        <option value='0'>UnPublish</option>
+                                        <option value='1'>Publish</option>
+
+                                    </select>
                                 </div>
                             @endcan
                             <div class="form-group">

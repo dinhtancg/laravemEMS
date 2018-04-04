@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Article;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -32,8 +33,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('create-article', function ($user) {
             return $user->hasAccess(['create-article']);
         });
-        Gate::define('update-article', function ($user, Post $post) {
-            return $user->hasAccess(['update-article']) or $user->id == $post->user_id;
+        Gate::define('update-article', function ($user, Article $article) {
+            return $user->hasAccess(['update-article']) or $user->id == $article->user_id;
         });
         Gate::define('confirm-article', function ($user) {
             return $user->hasAccess(['confirm-article']);
