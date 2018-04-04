@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-10 col-md-offset-2">
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3>Article</h3>
@@ -20,16 +20,34 @@
                                 {{ session('error') }}
                             </div>
                         @endif
+                        @can('create-post')
                         <div>
                             <a href="{{ route('admin.article.create') }}">
                                 <button type="button" class="btn btn-success btn-xs">New Article</button>
                             </a>
                         </div>
+                        @endcan
+                            <div class="row">
+                                <form class="form-horizontal" method="GET" action="{{ route('admin.article.index') }}" autocomplete="false">
+                                    <div class="col-md-4 margin-top-20">
+                                        <input type="text" class="form-control" placeholder="Search by keyword" name="search" value="{{ isset($request['search']) ? $request['search'] : '' }}">
+                                    </div>
+                                    <div class="col-md-4 margin-top-20">
+                                        <select class="form-control" id="category_id" name ="category_id">
+                                            <option value = "">Select category </option>
+                                            {!! $categoriesHtml !!}
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 margin-top-20">
+                                        <button class="btn btn-primary" type="submit" >Search</button>
+                                    </div>
+                                </form>
+                            </div>
                             <table class="table table-striped task-table">
                                 <thead>
                                 <th>Id</th>
                                 <th>Title</th>
-                                <th>Confirmed</th>
+                                <th>Category</th>
                                 <th>Published</th>
                                 <th>Created Time</th>
                                 </thead>
@@ -39,11 +57,17 @@
                                         <td class="table-text">
                                             <div> {{ $article->id }}</div>
                                         </td>
+                                        @can('update-article, $article')
                                         <td class="table-text">
-                                            <div> {{ $article->title }}</div>
+                                            <a href="{{ route('admin.article.edit', $article->id) }}">{{$article->title}}</a>
                                         </td>
+                                        @else
+                                            <td class="table-text">
+                                                {{$article->title}}
+                                            </td>
+                                        @endcan
                                         <td class="table-text">
-                                            <div> {{ $article->confirmed }}</div>
+                                            <div> {{ $article->name }}</div>
                                         </td>
                                         <td class="table-text">
                                             <div> {{ $article->published }}</div>
@@ -52,9 +76,14 @@
                                             <div>{{$article->created_at}}</div>
                                         </td>
                                         <td>
-                                            <a href="{{ route('admin.article.edit', $article->id) }}">
-                                                <button type="button" class="btn btn-primary btn-xs">Edit</button>
-                                            </a>
+                                            @can('update-article', $article)
+                                                <p>
+                                                    <a href="{{ route('admin.article.edit', $article->id) }}">
+                                                        <button type="button" class="btn btn-primary btn-xs">Edit</button>
+                                                    </a>
+                                                </p>
+                                            @endcan
+
                                             <form class="delete visible-lg-inline-block" action="{{ route('admin.article.destroy', $article->id) }}" method="POST">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 class Article extends Model
 {
@@ -27,22 +28,26 @@ class Article extends Model
      * @param int|null $cateType
      * @return Article collection
      */
-    public static function getIndex($search = null, $cateId = null, $status = null, $dateForm = null, $dateTo = null)
+    public static function getIndex($search = null, $categoryId = null)
     {
         $query = Article::select('articles.*', 'categories.name')
-            ->join('categories', 'articles.cate_id', '=', 'categories.id');
-//            ->where('articles.status', '=', is_null($status) ? self::STATUS_ACTIVE : $status);
+            ->join('categories', 'articles.category_id', '=', 'categories.id');
         if (!empty($categoryId)) {
             $query->where('articles.category_id', '=', $categoryId);
         }
         if (!empty($search)) {
             $query->where('articles.title', 'LIKE', '%'.$search.'%');
         }
-        if (!empty($dateForm)) {
-            $query->where('articles.created_at', '>=', $dateForm);
+        if (Auth::user()->roles[0]->slug == "editor"){
+            $query->where('articles.confirmed', '=', false)
+                ->where('articles.published', '=', false);
         }
-        if (!empty($dateTo)) {
-            $query->where('articles.created_at', '<=', $dateTo);
+        if (Auth::user()->roles[0]->slug == "secrectory"){
+            $query->where('articles.confirmed', '=', true)
+            ->where('articles.published', '=', false);
+        }
+        if (Auth::user()->roles[0]->slug == "author"){
+            $query->where('articles.user_id', '=', Auth::user()->id);
         }
         $query->orderBy('articles.id', 'desc');
         return $query->paginate(self::PAGINATE_LIMIT);

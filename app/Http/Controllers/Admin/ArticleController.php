@@ -16,11 +16,29 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::paginate(Article::PAGINATE_LIMIT);
-        return view('admin.article.index', ['articles' => $articles]);
+        $search = $request->get('search');
+        $categoryId = $request->get('category_id');
+        $articles = Article::getIndex($search, $categoryId);
+        $articles->setPath('');
+        $pagination = $articles->appends([
+            'search' => $search,
+            'category_id' =>$categoryId,
+        ]);
+        $categories = Category::all();
+        $categoriesHtml = Category::showCategories($categories, $request->category_id);
+        return view('admin.article.index', [
+            'articles' => $articles,
+            'request' => $request->all(),
+            'pagination'=>$pagination,
+            'categoriesHtml'=> $categoriesHtml,
+        ]);
     }
+
+//        $articles = Article::paginate(Article::PAGINATE_LIMIT);
+//        return view('admin.article.index', ['articles' => $articles]);
+//    }
 
     /**
      * Show the form for creating a new resource.
@@ -67,6 +85,9 @@ class ArticleController extends Controller
         $article->content = $request->content;
         $article->user_id = Auth::user()->id;
         $article->slug = Help::generateSlug($request->title);
+        $article->comment =  $request->comment;
+        $article->confirmed = is_null($request->confirmed)? $article->confirmed : $request->confirmed;
+        $article->published = is_null($request->published)? $article->published : $request->published;
         if ($request->hasFile('thumbnail')) {
         $image = $request->file('thumbnail');
                 $path = storage_path().'/app/public/images/thumbnails/';
@@ -75,7 +96,7 @@ class ArticleController extends Controller
                     \File::makeDirectory($path, $mode = 0777, true);
                 }
                 $upload = $image->move($path, $filename);
-                $article->thumbnail = 'storage/images/thumbnails'. $filename;
+                $article->thumbnail = 'storage/images/thumbnails/'. $filename;
                 if (!$upload) {
                     return redirect()->route('admin.article.index')->with('error', 'Upload file false');
                 }
@@ -95,7 +116,11 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        //
+        $article = Article::find($id);
+        if (!$article) {
+            return route('admin.article.index')->with('error', "Article not found.");
+        }
+        return view('admin.article.detail', ['article' => $article]);
     }
 
     /**
@@ -132,17 +157,7 @@ class ArticleController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+
 
     /**
      * Remove the specified resource from storage.
