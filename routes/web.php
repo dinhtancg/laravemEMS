@@ -22,17 +22,17 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function(){
     Route::get('/', 'Admin\AdminController@index')->name('admin.index');
     Route::prefix('category')->group(function (){
-        Route::get('', 'Admin\CategoryController@index')->name('admin.category.index');
-        Route::get('create','Admin\CategoryController@create')->name('admin.category.create');
+        Route::get('', 'Admin\CategoryController@index')->name('admin.category.index')->middleware('can:view-category');
+        Route::get('create','Admin\CategoryController@create')->name('admin.category.create')->middleware('can:create-category');
         Route::post('create', 'Admin\CategoryController@createCategory')-> name('admin.category.createCategory');
-        Route::get('edit/{id}', 'Admin\CategoryController@edit')->name('admin.category.edit');
-        Route::delete('/{id}', 'Admin\CategoryController@destroy')->name('admin.category.destroy');
+        Route::get('edit/{id}', 'Admin\CategoryController@edit')->name('admin.category.edit')->middleware('can:update-category');
+        Route::delete('/{id}', 'Admin\CategoryController@destroy')->name('admin.category.destroy')->middleware('can:delete-category');
     });
     Route::prefix('articles')->group(function (){
         Route::get('', 'Admin\ArticleController@index')->name('admin.article.index');
         Route::get('create','Admin\ArticleController@create')->name('admin.article.create')->middleware('can:create-article');
         Route::post('create', 'Admin\ArticleController@createArticle')-> name('admin.article.createArticle')->middleware('can:create-article');
-        Route::get('edit/{id}', 'Admin\ArticleController@edit')->name('admin.article.edit');
+        Route::get('edit/{id}', 'Admin\ArticleController@edit')->name('admin.article.edit') ;
         Route::delete('/{id}', 'Admin\ArticleController@destroy')->name('admin.article.destroy');
     });
     Route::prefix('users')->group(function (){

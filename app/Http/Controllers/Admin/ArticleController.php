@@ -77,8 +77,12 @@ class ArticleController extends Controller
             if (!$article) {
                 return redirect()->route('admin.article.index')->with('error', 'Article not found.');
             }
+            $article->confirmed = is_null($request->confirmed)? $article->confirmed : $request->confirmed;
+            $article->published = is_null($request->published)? $article->published : $request->published;
         } else {
             $article = new Article();
+            $article->confirmed = false;
+            $article->published = false;
         }
         $article->category_id = $request-> category;
         $article->title = $request->title;
@@ -86,8 +90,7 @@ class ArticleController extends Controller
         $article->user_id = Auth::user()->id;
         $article->slug = Help::generateSlug($request->title);
         $article->comment =  $request->comment;
-        $article->confirmed = is_null($request->confirmed)? $article->confirmed : $request->confirmed;
-        $article->published = is_null($request->published)? $article->published : $request->published;
+
         if ($request->hasFile('thumbnail')) {
         $image = $request->file('thumbnail');
                 $path = storage_path().'/app/public/images/thumbnails/';

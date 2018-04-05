@@ -37,6 +37,7 @@
                                             <option value = "">Select category </option>
                                             {!! $categoriesHtml !!}
                                         </select>
+
                                     </div>
                                     <div class="col-md-4 margin-top-20">
                                         <button class="btn btn-primary" type="submit" >Search</button>
