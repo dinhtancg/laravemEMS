@@ -1,7 +1,3 @@
-<?php
-$route = \Request::route()->getName();
-use Rikkei\Recruitment\View\View;
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +10,6 @@ use Rikkei\Recruitment\View\View;
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/AdminLTE.min.css') }}">
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/skins/_all-skins.min.css')}} ">
     <link rel="stylesheet" href="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.css') }}">
-    <link rel="stylesheet" href="{{ View::autoVersion('css/admin/layout_admin.css') }}">
     @yield('css')
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -23,9 +18,9 @@ use Rikkei\Recruitment\View\View;
     <header class="main-header">
 
         <!-- Logo -->
-        <a href="index2.html" class="logo">
+        <a href="{{route('admin.index')}}" class="logo">
             <span class="logo-mini"><b>A</b>LT</span>
-            <span class="logo-lg"><b>Webvn</b></span>
+            <span class="logo-lg "><i class="fa fa-home"></i><b>  Web 24h</b></span>
         </a>
 
         <nav class="navbar navbar-static-top">
@@ -34,38 +29,44 @@ use Rikkei\Recruitment\View\View;
                 <span class="sr-only">Toggle navigation</span>
             </a>
             <!-- Navbar Right Menu -->
-            <div class="navbar-custom-menu">
+            <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{ Session('user')->avatar_url}}" class="user-image" alt="User Image">
-                            <span class="hidden-xs">{{ Session('user')->name}}</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <!-- User image -->
-                            <li class="user-header">
-                                <img src="{{ preg_replace('/\?sz\=50/', '', Session('user')->avatar_url)}}" class="img-circle" alt="User Image">
+                    &nbsp;
+                </ul>
+                <!-- Right Side Of Navbar -->
+                <ul class="nav navbar-nav navbar-right" style="margin-right: 85px!important;">
+                    <!-- Authentication Links -->
+                    @guest
+                        <li><a href="{{ route('login') }}">Login</a></li>
+                        <li><a href="{{ route('register') }}">Register</a></li>
+                    @else
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
+                                {{ Auth::user()->name }} <span class="caret"></span>
+                            </a>
 
-                                <p>
-                                    {{ Session('user')->name}}
-                                </p>
-                            </li>
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">{{ trans('core::view.Profile') }}</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="{{ url('auth/disconnect', ['google']) }}" class="btn btn-default btn-flat">{{ trans('core::view.Sign out') }}</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        Logout
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @endguest
                 </ul>
             </div>
+
         </nav>
     </header>
-    @include('layouts.admin.include.side_bar')
+    @include('admin.layouts.admin.include.side_bar')
     <div class="content-wrapper">
         @if (session('message'))
             <div class="alert alert-success fade in">
@@ -97,13 +98,13 @@ use Rikkei\Recruitment\View\View;
 <!-- ./wrapper -->
 
 <script>
-var curRoute = '{{ $route }}';
+{{--var curRoute = '{{ $route }}';--}}
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
 <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
-<script src="{{ View::autoVersion('js/admin/main.js') }}"></script>
+{{--<script src="{{ View::autoVersion('js/admin/main.js') }}"></script>--}}
 @yield('script')
 </body>
 </html>

@@ -1,9 +1,7 @@
-@extends('layouts.app')
-
+@extends('admin.layouts.admin.master')
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-2">
+
+            <div class="col-md-12">
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3>Article</h3>
@@ -20,13 +18,14 @@
                                 {{ session('error') }}
                             </div>
                         @endif
-                        @can('create-post')
+                        @can('create-article')
                         <div>
                             <a href="{{ route('admin.article.create') }}">
                                 <button type="button" class="btn btn-success btn-xs">New Article</button>
                             </a>
                         </div>
                         @endcan
+                            <br>
                             <div class="row">
                                 <form class="form-horizontal" method="GET" action="{{ route('admin.article.index') }}" autocomplete="false">
                                     <div class="col-md-4 margin-top-20">
@@ -100,6 +99,25 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 @endsection
+@section('script')
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script>
+        CKEDITOR.replace( 'content', {
+            filebrowserBrowseUrl: '{{ asset('ckfinder/ckfinder.html') }}',
+            filebrowserImageBrowseUrl: '{{ asset('ckfinder/ckfinder.html?type=Images') }}',
+            filebrowserFlashBrowseUrl: '{{ asset('ckfinder/ckfinder.html?type=Flash') }}',
+            filebrowserUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') }}',
+            filebrowserImageUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') }}',
+            filebrowserFlashUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') }}'
+        } );
+        CKEDITOR.replace( 'comment',{
+            filebrowserBrowseUrl: '{{ asset('ckfinder/ckfinder.html') }}',
+            filebrowserImageBrowseUrl: '{{ asset('ckfinder/ckfinder.html?type=Images') }}',
+            filebrowserFlashBrowseUrl: '{{ asset('ckfinder/ckfinder.html?type=Flash') }}',
+            filebrowserUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files') }}',
+            filebrowserImageUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images') }}',
+            filebrowserFlashUploadUrl: '{{ asset('ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash') }}'
+        } );
+    </script>
+    @endsection
