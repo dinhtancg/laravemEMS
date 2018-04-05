@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Help;
+use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -69,8 +71,6 @@ class UsersController extends Controller
             $request->validate([
                 'name' => "required|max:255|unique:categories,name,NULL,id",
                 'email'=>"required",
-                'password' => 'min:6',
-                'password_confirmation' => 'required_with:password|same:password|min:6'
             ]);
         }
         if ($id) {
@@ -83,13 +83,21 @@ class UsersController extends Controller
         }
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = Hash::make($request->newPassword);
+        $password = Help::generateRandomString();
+        $user->password = Hash::make($password);
+
+        $data=[];
+        $data['email']= $request->email;
+        $data['password']= $password;
+        HomeController::sendMail($data);
 
         $user->save();
         $user->roles()->sync([$request->input('role')]);
         if (!$user->save()) {
             return redirect()->route('admin.user.index')->with('error', 'An error occurred, user has not been saved.');
         }
+
+
         return redirect()->route('admin.user.index')->with('success', 'User has been save successfully.');
     }
     /**
