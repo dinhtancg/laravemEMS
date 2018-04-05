@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Mail;
+use Illuminate\Support\Facades\Session;
 class HomeController extends Controller
 {
     /**
@@ -23,6 +24,20 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('admin');
     }
+    public static function sendMail($data)
+
+    {
+
+        $data['title'] = "Welcome to Web24h";
+        $result = Mail::send('admin.emails.email', $data, function($message) use ($data){
+
+            $message->to($data['email'])
+
+                ->subject('Information Account Mail');
+
+        });
+    }
+
 }
