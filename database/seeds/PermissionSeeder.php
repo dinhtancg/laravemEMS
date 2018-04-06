@@ -26,7 +26,6 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'role-delete',
-                'display_name' => 'Delete Role',
                 'description' => 'Delete Role'
             ],
             [

@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+    const PAGINATE_LIMIT = 5;
     protected $fillable = [ 'name', 'slug', 'permission'];
-
-    protected $casts = [
-        'permissions' => 'array',
-    ];
 
     public function users()
     {
         return $this->belongsToMany('App\User', 'users_roles');
     }
-
+    public function permissions()
+    {
+        return $this->belongsToMany('App\Permission', 'role_permissions');
+    }
     public function hasAccess(array $permissions) : bool
     {
         foreach ($permissions as $permission) {
