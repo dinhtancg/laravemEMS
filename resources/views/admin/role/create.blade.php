@@ -37,8 +37,7 @@
                                         @foreach($permissions as $permission)
 
                                             <option value="{{ $permission->id }}" {{ (collect(old('permisions'))->contains($permission->id)) ? 'selected':'' }}
-                                            {{
-                                             ($role) ? (in_array($permission->id, array_map(function ($a){return $a["id"];}, $role->permissions->toArray())) ? 'selected' : '') :'' }} >
+                                            {{($role) ? (in_array($permission->id, array_map(function ($a){return $a["id"];}, $role->permissions->toArray())) ? 'selected' : '') :'' }} >
                                                 {{ $permission->description }}
                                             </option>
                                         @endforeach
