@@ -21,7 +21,7 @@
                             </div>
                         @endif
                         <div>
-                            <a href="{{ route('admin.role .create') }}">
+                            <a href="{{ route('admin.role.create') }}">
                                 <button type="button" class="btn btn-success btn-xs">New Role</button>
                             </a>
                         </div>
