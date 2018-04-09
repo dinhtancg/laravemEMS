@@ -27,6 +27,12 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function(){
         Route::get('edit/{id}', 'Admin\CategoryController@edit')->name('admin.category.edit');
         Route::delete('/{id}', 'Admin\CategoryController@destroy')->name('admin.category.destroy');
     });
+    Route::prefix('roles')->group( function (){
+        Route::get('','Admin\RoleController@index')->name('admin.role.index');
+        Route::get('create','Admin\RoleController@create')->name('admin.role.create');
+        Route::post('create', 'Admin\RoleController@createRole')-> name('admin.role.createRole');
+        Route::get('edit/{id}', 'Admin\RoleController@edit')->name('admin.role.edit');
+    });
     Route::prefix('articles')->group(function (){
         Route::get('', 'Admin\ArticleController@index')->name('admin.article.index');
         Route::get('create','Admin\ArticleController@create')->name('admin.article.create')->middleware('can:create-article');
