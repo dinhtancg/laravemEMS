@@ -18,6 +18,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'root',
                 'email' => 'root@gmail.com',
                 'password' => "$2y$10$0GJf7cDm1Dl20sx7wOZVu.t3pW1c9mRpGyTpm4ILyLSFFCyZvhXza",
+                'first_login' => false,
                 'created_at' => Carbon::now(),
             ],
             [
@@ -25,6 +26,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'secrectory',
                 'email' => 'secrectory@gmail.com',
                 'password' => "$2y$10$0GJf7cDm1Dl20sx7wOZVu.t3pW1c9mRpGyTpm4ILyLSFFCyZvhXza",
+                'first_login' => false,
                 'created_at' => Carbon::now(),
             ],
             [
@@ -32,6 +34,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'editor',
                 'email' => 'editor@gmail.com',
                 'password' => "$2y$10$0GJf7cDm1Dl20sx7wOZVu.t3pW1c9mRpGyTpm4ILyLSFFCyZvhXza",
+                'first_login' => false,
                 'created_at' => Carbon::now(),
             ],
             [
@@ -39,6 +42,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'author',
                 'email' => 'author@gmail.com',
                 'password' => "$2y$10$0GJf7cDm1Dl20sx7wOZVu.t3pW1c9mRpGyTpm4ILyLSFFCyZvhXza",
+                'first_login' => false,
                 'created_at' => Carbon::now(),
             ],
         ];

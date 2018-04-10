@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Role;
 use App\Permission;
 use App\Help;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
 {
@@ -17,7 +19,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::paginate(Role::PAGINATE_LIMIT);
+        $roles = Role::with('permissions')->paginate(Role::PAGINATE_LIMIT);
         return view('admin.role.index', ['roles' => $roles]);
     }
 
@@ -80,7 +82,7 @@ class RoleController extends Controller
         $role->slug = Help::generateSlug($request->name);
 
         $role->save();
-        $role->permissions()->attach($request->input('permisions'));
+        $role->permissions()->sync($request->input('permisions'));
         if (!$role->save()) {
             return redirect()->route('admin.role.index')->with('error', 'An error occurred, role has not been saved.');
         }
@@ -117,13 +119,13 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        $target = Category::find($id);
+        $target = Role::find($id);
         if ($target) {
             $target->delete();
-            return redirect()->route('admin.category.index')
-                ->with('success', 'Category has been deleted successfully');
+            return redirect()->route('admin.role.index')
+                ->with('success', 'Role has been deleted successfully');
         }
-        return redirect()->route('admin.category.index')
-            ->with('error', 'Category not found');
+        return redirect()->route('admin.role.index')
+            ->with('error', 'Role not found');
     }
 }

@@ -83,11 +83,12 @@ class ArticleController extends Controller
         $article->category_id = $request-> category;
         $article->title = $request->title;
         $article->content = $request->content;
+
         $article->user_id = Auth::user()->id;
         $article->slug = Help::generateSlug($request->title);
         $article->comment =  $request->comment;
-        $article->confirmed = is_null($request->confirmed)? $article->confirmed : $request->confirmed;
-        $article->published = is_null($request->published)? $article->published : $request->published;
+//        $article->confirmed = is_null($request->confirmed)? $article->confirmed : $request->confirmed;
+//        $article->published = is_null($request->published)? $article->published : $request->published;
         if ($request->hasFile('thumbnail')) {
         $image = $request->file('thumbnail');
                 $path = storage_path().'/app/public/images/thumbnails/';
@@ -157,6 +158,26 @@ class ArticleController extends Controller
         ]);
     }
 
+    public function confirm($id)
+    {
+        $article = Article::findOrFail($id);
+        if (!$article) {
+            return redirect('admin.article.index')->with('error', "Article not found.");
+        }
+        $article->confirmed = true;
+        $article->save();
+        return redirect('admin.article.index')->with('success','Article was confirmed');
+    }
+    public function publish($id)
+    {
+        $article = Article::findOrFail($id);
+        if (!$article) {
+            return redirect('admin.article.index')->with('error', "Article not found.");
+        }
+        $article->published = true;
+        $article->save();
+        return redirect('admin.article.index')->with('success','Article was Publish');
+    }
 
 
     /**
