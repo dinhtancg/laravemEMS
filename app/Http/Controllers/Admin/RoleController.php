@@ -7,12 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Role;
 use App\Permission;
 use App\Help;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 
-use App\Permissions\HasPermissionsTrait;
 class RoleController extends Controller
 {
-    use HasPermissionsTrait;
     /**
      * Display a listing of the resource.
      *
@@ -20,8 +19,6 @@ class RoleController extends Controller
      */
     public function index()
     {
-//        dd(Auth::user()->can('role-list'));
-//        dd(Auth::user()->hasRole('admin','editor'));
         $roles = Role::paginate(Role::PAGINATE_LIMIT);
         return view('admin.role.index', ['roles' => $roles]);
     }
@@ -85,7 +82,7 @@ class RoleController extends Controller
         $role->slug = Help::generateSlug($request->name);
 
         $role->save();
-        $role->permissions()->attach($request->input('permisions'));
+        $role->permissions()->sync($request->input('permisions'));
         if (!$role->save()) {
             return redirect()->route('admin.role.index')->with('error', 'An error occurred, role has not been saved.');
         }

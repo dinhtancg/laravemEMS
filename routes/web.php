@@ -28,7 +28,7 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function(){
         Route::delete('/{id}', 'Admin\CategoryController@destroy')->name('admin.category.destroy');
     });
     Route::prefix('roles')->group( function (){
-        Route::get('','Admin\RoleController@index')->name('admin.role.index');
+        Route::get('','Admin\RoleController@index')->name('admin.role.index')->middleware('can:role-list');
         Route::get('create','Admin\RoleController@create')->name('admin.role.create');
         Route::post('create', 'Admin\RoleController@createRole')-> name('admin.role.createRole');
         Route::get('edit/{id}', 'Admin\RoleController@edit')->name('admin.role.edit');

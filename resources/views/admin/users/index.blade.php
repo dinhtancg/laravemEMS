@@ -56,7 +56,7 @@
                                 <form class="delete visible-lg-inline-block" action="{{ route('admin.user.destroy', $user->id) }}" method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                                    <input class="btn btn-danger btn-xs" type="submit" value="Delete">
+                                    <input class="btn btn-danger btn-xs"  type="submit" onclick="return confirm('Are you sure you want to delete this item?');" value="Delete">
                                 </form>
                             </td>
                         </tr>
