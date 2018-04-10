@@ -63,9 +63,9 @@
                         @endforeach
                         </tbody>
                     </table>
-                    {{--<div class="text-center">--}}
-                        {{--{{ $user->render() }}--}}
-                    {{--</div>--}}
+                    <div class="text-center">
+                        {{ $users->render() }}
+                    </div>
                 </div>
             </div>
         </div>

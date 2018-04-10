@@ -56,7 +56,7 @@
                                         <td class="table-text">
                                             <div> {{ $article->id }}</div>
                                         </td>
-                                        @can('update-article, $article')
+
                                         <td class="table-text">
                                             <a href="{{ route('admin.article.edit', $article->id) }}">{{$article->title}}</a>
                                         </td>
@@ -64,7 +64,7 @@
                                             <td class="table-text">
                                                 {{$article->title}}
                                             </td>
-                                        @endcan
+
                                         <td class="table-text">
                                             <div> {{ $article->name }}</div>
                                         </td>
