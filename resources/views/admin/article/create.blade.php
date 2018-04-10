@@ -45,37 +45,27 @@
                             </div>
                             <div class="form-group">
                                 <label for="content">Content</label>
-                                <textarea class="form-control" rows="5" id="content-ckeditor" name = "content"> {{ $article ? old('content', $article->content) : old('content', '') }}</textarea>
+                                <textarea {{ (!( Auth::user()->hasRole('author')) ? 'disabled': '') }} class="form-control" rows="5" id="content-ckeditor" name = "content"> {{ $article ? old('content', $article->content) : old('content', '') }}</textarea>
                                 @if ($errors->has('content'))
                                     <p class="text-danger">{{ $errors->first('content')}}</p>
                                 @endif
                             </div>
-                            @can('confirm-article')
+
                             <div class="form-group">
                                 <label for="comnment">Comment</label>
-                                <textarea class="form-control" rows="5"  name = "comment"> {{ $article ? old('comment', $article->comment) : old('comment', '') }}</textarea>
+                                <textarea {{ (!(Auth::user()->hasRole('editor')) ? 'disabled': '') }} class="form-control" rows="5"  name = "comment"> {{ $article ? old('comment', $article->comment) : old('comment', '') }}</textarea>
                                 @if ($errors->has('comment'))
                                     <p class="text-danger">{{ $errors->first('comment')}}</p>
                                 @endif
                             </div>
+                            @can('article-confirm')
                             <div class="form-group">
                                 <label for="confirm">Confirm</label>
-                                <select class="form-control" id="confirm" name="confirmed">
-                                    <option value='0'>Unconfirm</option>
-                                    <option value='1'>Confirm</option>
-
-                                </select>
+                                <form class="visible-lg-inline-block" action="{{ route('admin.article.confirm', $article->id) }}" method="POST">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                    <input class="btn btn-danger btn-xs" type="submit" onclick="return confirm('Are you sure you want to confirm this article?');" value="Confirm">
+                                </form>
                             </div>
-                            @endcan
-                            @can('publish-article')
-                                <div class="form-group">
-                                    <label for="publish">Publish</label>
-                                    <select class="form-control" id="publish" name="published">
-                                        <option value='0'>UnPublish</option>
-                                        <option value='1'>Publish</option>
-
-                                    </select>
-                                </div>
                             @endcan
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Save</button>

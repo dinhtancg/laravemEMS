@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class CheckPermission
+class RoleMiddleware
 {
     /**
      * Handle an incoming request.
@@ -14,9 +14,14 @@ class CheckPermission
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $role, $permission = null)
     {
-        if(Auth::user())
+        if(!$request->user()->hasRole($role)) {
+            abort(403);
+        }
+        if($permission !== null && !$request->user()->can($permission)) {
+            abort(403);
+        }
         return $next($request);
     }
 }
