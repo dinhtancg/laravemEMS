@@ -35,7 +35,7 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function(){
     });
     Route::prefix('articles')->group(function (){
         Route::get('', 'Admin\ArticleController@index')->name('admin.article.index');
-        Route::get('create','Admin\ArticleController@create')->name('admin.article.create')->middleware('can:create-article');
+        Route::get('create','Admin\ArticleController@create')->name('admin.article.create')->middleware('can:article-create');
         Route::post('create', 'Admin\ArticleController@createArticle')-> name('admin.article.createArticle')->middleware('can:create-article');
         Route::get('edit/{id}', 'Admin\ArticleController@edit')->name('admin.article.edit');
         Route::delete('/{id}', 'Admin\ArticleController@destroy')->name('admin.article.destroy');

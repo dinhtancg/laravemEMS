@@ -18,7 +18,7 @@
                                 {{ session('error') }}
                             </div>
                         @endif
-                        @can('create-article')
+                        @can('article-create')
                         <div>
                             <a href="{{ route('admin.article.create') }}">
                                 <button type="button" class="btn btn-success btn-xs">New Article</button>
@@ -27,7 +27,7 @@
                         @endcan
                             <br>
                             <div class="row">
-                                <form class="form-horizontal" method="GET" action="{{ route('admin.article.index') }}" autocomplete="false">
+                                <form class="form-horizontal"method="GET" action="{{ route('admin.article.index') }}" autocomplete="false">
                                     <div class="col-md-4 margin-top-20">
                                         <input type="text" class="form-control" placeholder="Search by keyword" name="search" value="{{ isset($request['search']) ? $request['search'] : '' }}">
                                     </div>
@@ -56,7 +56,7 @@
                                         <td class="table-text">
                                             <div> {{ $article->id }}</div>
                                         </td>
-
+                                        @can('article-edit')
                                         <td class="table-text">
                                             <a href="{{ route('admin.article.edit', $article->id) }}">{{$article->title}}</a>
                                         </td>
