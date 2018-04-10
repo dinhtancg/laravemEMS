@@ -19,7 +19,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::paginate(Role::PAGINATE_LIMIT);
+        $roles = Role::with('permissions')->paginate(Role::PAGINATE_LIMIT);
         return view('admin.role.index', ['roles' => $roles]);
     }
 
@@ -119,13 +119,13 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        $target = Category::find($id);
+        $target = Role::find($id);
         if ($target) {
             $target->delete();
-            return redirect()->route('admin.category.index')
-                ->with('success', 'Category has been deleted successfully');
+            return redirect()->route('admin.role.index')
+                ->with('success', 'Role has been deleted successfully');
         }
-        return redirect()->route('admin.category.index')
-            ->with('error', 'Category not found');
+        return redirect()->route('admin.role.index')
+            ->with('error', 'Role not found');
     }
 }

@@ -6,7 +6,6 @@
                     <div class="panel-heading">
                         <h3>Article</h3>
                     </div>
-
                     <div class="panel-body">
                         @if (session('success'))
                             <div class="alert alert-success">
@@ -75,19 +74,26 @@
                                             <div>{{$article->created_at}}</div>
                                         </td>
                                         <td>
-                                            @can('update-article', $article)
+                                            @can('article-edit')
                                                 <p>
                                                     <a href="{{ route('admin.article.edit', $article->id) }}">
                                                         <button type="button" class="btn btn-primary btn-xs">Edit</button>
                                                     </a>
                                                 </p>
                                             @endcan
-
-                                            <form class="delete visible-lg-inline-block" action="{{ route('admin.article.destroy', $article->id) }}" method="POST">
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                                                <input class="btn btn-danger btn-xs" type="submit" value="Delete">
-                                            </form>
+                                            @can('article-delete')
+                                                <form class=" visible-lg-inline-block" action="{{ route('admin.article.destroy', $article->id) }}" method="POST">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                                    <input class="btn btn-danger btn-xs" type="submit" value="Delete">
+                                                </form>
+                                            @endcan
+                                            @can('article-publish')
+                                                <form class=" visible-lg-inline-block" action="{{ route('admin.article.publish', $article->id) }}" method="POST">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                                    <input class="btn btn-info btn-xs" type="submit" value="Publish">
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach
