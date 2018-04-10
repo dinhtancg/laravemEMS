@@ -82,7 +82,7 @@ class RoleController extends Controller
         $role->slug = Help::generateSlug($request->name);
 
         $role->save();
-        $role->permissions()->attach($request->input('permisions'));
+        $role->permissions()->sync($request->input('permisions'));
         if (!$role->save()) {
             return redirect()->route('admin.role.index')->with('error', 'An error occurred, role has not been saved.');
         }
