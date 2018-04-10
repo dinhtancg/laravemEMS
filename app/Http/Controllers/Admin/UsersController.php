@@ -19,8 +19,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::with('roles')->get();
-
+        $users = User::with('roles')->paginate(5);
         return view('admin.users.index', ['users' => $users]);
 
     }
@@ -92,7 +91,7 @@ class UsersController extends Controller
         HomeController::sendMail($data);
 
         $user->save();
-        $user->roles()->sync([$request->input('role')]);
+        $user->roles()->sync($request->input('roles'));
         if (!$user->save()) {
             return redirect()->route('admin.user.index')->with('error', 'An error occurred, user has not been saved.');
         }

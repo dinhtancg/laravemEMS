@@ -45,7 +45,9 @@
                                 <div> {{ $user->email }}</div>
                             </td>
                             <td class="table-text">
-                                <div>{{$user->roles[0]['name']}}</div>
+                                @foreach($user->roles as $role)
+                                    <p>{{$role->name}}</p>
+                                @endforeach
                             </td>
                             <td>
                                 <a href="{{ route('admin.user.edit', $user->id) }}">
@@ -61,9 +63,9 @@
                         @endforeach
                         </tbody>
                     </table>
-                    {{--<div class="text-center">--}}
-                        {{--{{ $user->render() }}--}}
-                    {{--</div>--}}
+                    <div class="text-center">
+                        {{ $users->render() }}
+                    </div>
                 </div>
             </div>
         </div>
