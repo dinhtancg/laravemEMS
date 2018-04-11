@@ -53,7 +53,7 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function(){
         Route::delete('/{id}', 'Admin\UsersController@destroy')->name('admin.user.destroy');
     });
     Route::prefix('send-mail')->group(function (){
-        Route::get('','HomeController@sendMail')->name('admin.emails.email');
+        Route::get('','HomeController@sendMail')->name('admin.emails.welcomemail');
 
     });
 });

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Mail;
 use Illuminate\Support\Facades\Session;
-class HomeController extends Controller
+class EmailController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -30,12 +30,12 @@ class HomeController extends Controller
 
     {
 
-        $data['title'] = "Welcome to Web24h";
-        $result = Mail::send('admin.emails.email', $data, function($message) use ($data){
+        $data['title'] = "Welcome to Tin Tức 24h";
+        $result = Mail::send('admin.emails.welcomemail', $data, function($message) use ($data){
 
             $message->to($data['email'])
 
-                ->subject('Information Account Mail');
+                ->subject($data['Tin Tức 24h Announcement']);
 
         });
     }

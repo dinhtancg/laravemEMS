@@ -20,7 +20,8 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::with('roles')->paginate(5);
-        return view('admin.users.index', ['users' => $users]);
+        $count = User::count();
+        return view('admin.users.index', ['users' => $users, 'count' => $count]);
 
     }
 
@@ -85,17 +86,19 @@ class UsersController extends Controller
         $password = Help::generateRandomString();
         $user->password = Hash::make($password);
 
-        $data=[];
-        $data['email']= $request->email;
-        $data['password']= $password;
-        HomeController::sendMail($data);
+
 
         $user->save();
         $user->roles()->sync($request->input('roles'));
         if (!$user->save()) {
             return redirect()->route('admin.user.index')->with('error', 'An error occurred, user has not been saved.');
         }
-
+        $data=[];
+        $data['email']= $request->email;
+        $data['password']= $password;
+        $data['name']= $request->name;
+        $data['roles']= $user->roles()->get()->pluck('name');
+        EmailController::sendMail($data);
 
         return redirect()->route('admin.user.index')->with('success', 'User has been save successfully.');
     }

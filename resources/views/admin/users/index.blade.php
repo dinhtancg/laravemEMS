@@ -6,7 +6,7 @@
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h3>All Users</h3>
+                    <h3>All Users ({{$count}})</h3>
                 </div>
 
                 <div class="panel-body">
@@ -27,7 +27,6 @@
                    </div>
                     <table class="table table-striped task-table">
                         <thead>
-                        <th>Id</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Role</th>
@@ -35,9 +34,6 @@
                         <tbody>
                         @foreach($users as $user)
                         <tr>
-                            <td class="table-text">
-                                <div> {{ $user->id }}</div>
-                            </td>
                             <td class="table-text">
                                 <div> {{ $user -> name }}</div>
                             </td>
