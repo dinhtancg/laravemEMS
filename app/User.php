@@ -53,7 +53,7 @@ class User extends Authenticatable
         return (bool) $this->permissions->where('name', $permission)->count();
     }
 
-    public function hasPermissionThroughRole($permission) {
+    protected function hasPermissionThroughRole($permission) {
         $a = Permission::where('name',$permission)->first();
         foreach ($a->roles as $role){
             if($this->roles->contains($role)) {

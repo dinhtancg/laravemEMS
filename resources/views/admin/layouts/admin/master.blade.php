@@ -72,7 +72,7 @@
             <div class="alert alert-success fade in">
                 <button class="close" data-dismiss="alert">×</button>
                 <i class="fa-fw fa fa-check"></i>
-                {{ session('message') }}
+                {{ session('success') }}
             </div>
         @endif
         @if (session('error'))

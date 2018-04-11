@@ -60,15 +60,15 @@
                             </div>
                             @can('article-confirm')
                             <div class="form-group">
-                                <label for="confirm">Confirm</label>
-                                <form class="visible-lg-inline-block" action="{{ route('admin.article.confirm', $article->id) }}" method="POST">
+
+                                <form class="visible-lg-inline-block" action="#" method="POST">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                                    <input class="btn btn-danger btn-xs" type="submit" onclick="return confirm('Are you sure you want to confirm this article?');" value="Confirm">
+                                    <input class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you want to confirm this article?');" value="Confirm">
                                 </form>
                             </div>
                             @endcan
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="submit" class="btn btn-primary">{{ ((Auth::user()->hasRole('editor')) ? 'Decline' : 'Save') }}</button>
                             </div>
                         </form>
                     </div>

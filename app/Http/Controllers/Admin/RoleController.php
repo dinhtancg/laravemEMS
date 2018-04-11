@@ -32,6 +32,9 @@ class RoleController extends Controller
     public function getView($id = null) {
         if ($id){
             $role = Role::with('permissions')->findOrFail($id);
+            if(!$role){
+                return redirect(route('admin.role.index'))->with('error', 'Role not found.');
+            }
         }else {
             $role = null;
 

@@ -33,6 +33,9 @@ class UsersController extends Controller
     public function getView($id = null) {
         if ($id){
             $users = User::where('id', '=', $id)->first();
+            if(!$users){
+                return redirect(route('admin.user.index'))->with('error', 'User not found.');
+            }
         }else {
             $users = null;
         }

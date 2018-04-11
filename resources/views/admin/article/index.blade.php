@@ -7,16 +7,6 @@
                 <h3>Article</h3>
             </div>
             <div class="panel-body">
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                @if (session('error'))
-                    <div class="alert alert-success">
-                        {{ session('error') }}
-                    </div>
-                @endif
                 @can('article-create')
                     <div>
                         <a href="{{ route('admin.article.create') }}">

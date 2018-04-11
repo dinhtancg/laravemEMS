@@ -10,16 +10,6 @@
                 </div>
 
                 <div class="panel-body">
-                    @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                    @endif
-                    @if (session('error'))
-                    <div class="alert alert-success">
-                        {{ session('error') }}
-                    </div>
-                    @endif
                     <div>
                        <a href="{{ route('admin.user.create') }}">
                            <button type="button" class="btn btn-success btn-xs">Create New User</button>
