@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','HomeController@index')->name('index');
 
 Auth::routes();
 
@@ -56,4 +54,5 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function(){
         Route::get('','HomeController@sendMail')->name('admin.emails.welcomemail');
 
     });
+
 });
