@@ -76,16 +76,23 @@ class ArticleController extends Controller
             $article = Article::find($id);
             if (!$article) {
                 return redirect()->route('admin.article.index')->with('error', 'Article not found.');
+            }else {
+
+                if ( $article->content != $request->content && $article->reject_flag == true ) {
+                    $article->reject_flag = false;
+                }
             }
         } else {
             $article = new Article();
+            $article->user_id = Auth::user()->id;
         }
         $article->category_id = $request-> category;
         $article->title = $request->title;
+
         $article->content = $request->content;
 
-        $article->user_id = Auth::user()->id;
         $article->slug = Help::generateSlug($request->title);
+
         $article->comment =  $request->comment;
 //        $article->confirmed = is_null($request->confirmed)? $article->confirmed : $request->confirmed;
 //        $article->published = is_null($request->published)? $article->published : $request->published;
@@ -104,9 +111,9 @@ class ArticleController extends Controller
             }
         $article->save();
         if (!$article->save()) {
-            return redirect()->route('admin.article.index')->with('error', 'An error occurred, news has not been saved');
+            return redirect()->route('admin.article.index')->with('error', 'An error occurred, Article has not been saved');
         }
-        return redirect()->route('admin.article.index')->with('success','News has been save successfully');
+        return redirect()->route('admin.article.index')->with('success','Article has been save successfully');
     }
 
     /**
@@ -165,18 +172,29 @@ class ArticleController extends Controller
             return redirect('admin.article.index')->with('error', "Article not found.");
         }
         $article->confirmed = true;
+        $article->reject_flag = false;
         $article->save();
-        return redirect('admin.article.index')->with('success','Article was confirmed');
+        return redirect()->route('admin.article.index')->with('success','Article was confirmed');
     }
     public function publish($id)
     {
         $article = Article::findOrFail($id);
         if (!$article) {
-            return redirect('admin.article.index')->with('error', "Article not found.");
+            return redirect()->route('admin.article.index')->with('error', "Article not found.");
         }
         $article->published = true;
         $article->save();
-        return redirect('admin.article.index')->with('success','Article was Publish');
+        return redirect()->route('admin.article.index')->with('success','Article was Published');
+    }
+
+    public function reject($id) {
+        $article = Article::findOrFail($id);
+        if (!$article) {
+            return redirect('admin.article.index')->with('error', "Article not found.");
+        }
+        $article->reject_flag = true;
+        $article->save();
+        return redirect()->back()->with('success', 'Article was rejected!');
     }
 
 

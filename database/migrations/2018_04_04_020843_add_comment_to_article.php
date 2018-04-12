@@ -14,7 +14,7 @@ class AddCommentToArticle extends Migration
     public function up()
     {
         Schema::table('articles', function($table) {
-            $table->string('comment');
+            $table->string('comment')->nullable();
         });
     }
 

@@ -12,7 +12,6 @@
                             <h3>Create Article</h3>
                         @endif
                     </div>
-
                     <div class="panel-body">
                         <form method="post" action="{{ route('admin.article.createArticle') }}" enctype="multipart/form-data">
                             {{ csrf_field() }}
@@ -45,7 +44,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="content">Content</label>
-                                <textarea {{ (!( Auth::user()->hasRole('author')) ? 'disabled': '') }} class="form-control" rows="5" id="content-ckeditor" name = "content"> {{ $article ? old('content', $article->content) : old('content', '') }}</textarea>
+                                <textarea class="form-control" rows="5" id="content-ckeditor" name = "content"> {{ $article ? old('content', $article->content) : old('content', '') }}</textarea>
                                 @if ($errors->has('content'))
                                     <p class="text-danger">{{ $errors->first('content')}}</p>
                                 @endif
@@ -53,24 +52,33 @@
 
                             <div class="form-group">
                                 <label for="comnment">Comment</label>
-                                <textarea {{ (!(Auth::user()->hasRole('editor')) ? 'disabled': '') }} class="form-control" rows="5"  name = "comment"> {{ $article ? old('comment', $article->comment) : old('comment', '') }}</textarea>
+                                <textarea class="form-control" rows="5"  name = "comment"> {{ $article ? old('comment', $article->comment) : old('comment', '') }}</textarea>
                                 @if ($errors->has('comment'))
                                     <p class="text-danger">{{ $errors->first('comment')}}</p>
                                 @endif
                             </div>
-                            @can('article-confirm')
-                            <div class="form-group">
 
-                                <form class="visible-lg-inline-block" action="#" method="POST">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                                    <input class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you want to confirm this article?');" value="Confirm">
-                                </form>
-                            </div>
-                            @endcan
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">{{ ((Auth::user()->hasRole('editor')) ? 'Decline' : 'Save') }}</button>
+                                <button type="submit" class="btn btn-primary">Save</button>
                             </div>
                         </form>
+                        @can('article-confirm')
+                            <div class="form-group">
+
+                                <form class="visible-lg-inline-block" action="{{ route('admin.article.confirm', $article->id ) }}" method="POST">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                    <input class="btn btn-warning" type="submit" onclick="return confirm('Are you sure you want to CONFIRM this article?');" value="Confirm">
+                                </form>
+                            </div>
+                        @endcan
+                        @can('article-reject')
+                            <div class="form-group">
+                                <form class="visible-lg-inline-block" action="{{ route('admin.article.reject', $article->id ) }}" method="POST">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                    <input class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you want to REJECT this article?');" value="Reject">
+                                </form>
+                            </div>
+                        @endcan
                     </div>
                 </div>
             </div>

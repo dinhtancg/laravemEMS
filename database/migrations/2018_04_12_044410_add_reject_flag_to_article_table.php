@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddContentFlagToArticle extends Migration
+class AddRejectFlagToArticleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddContentFlagToArticle extends Migration
     public function up()
     {
         Schema::table('articles', function($table) {
-            $table->boolean('content_flag')->default(false);
+            $table->boolean('reject_flag')->default(false);
         });
     }
 
@@ -26,7 +26,7 @@ class AddContentFlagToArticle extends Migration
     public function down()
     {
         Schema::table('articles', function($table) {
-            $table->dropColumn('content_flag')->default(false);
+            $table->dropColumn('reject_flag');
         });
     }
 }

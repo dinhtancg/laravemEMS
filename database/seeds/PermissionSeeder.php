@@ -30,20 +30,52 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'article-list',
-                'description' => 'See only Listing Of Item'
+                'description' => 'Display list article'
             ],
             [
                 'name' => 'article-create',
-                'description' => 'Create New Item'
+                'description' => 'Create New article'
             ],
             [
                 'name' => 'article-edit',
-                'description' => 'Edit Item'
+                'description' => 'Edit article'
             ],
             [
                 'name' => 'article-delete',
-                'description' => 'Delete Item'
-            ]
+                'description' => 'Delete article'
+            ],
+            [
+                'name' => 'user-list',
+                'description' => 'Display List user'
+            ],
+            [
+                'name' => 'user-create',
+                'description' => 'Create new user'
+            ],
+            [
+                'name' => 'user-edit',
+                'description' => 'Edit user'
+            ],
+            [
+                'name' => 'user-delete',
+                'description' => 'Delete user'
+            ],
+            [
+                'name' => 'category-list',
+                'description' => 'Display List Category'
+            ],
+            [
+                'name' => 'category-create',
+                'description' => 'Create New Category'
+            ],
+            [
+                'name' => 'category-edit',
+                'description' => 'Edit Category'
+            ],
+            [
+                'name' => 'category-delete',
+                'description' => 'Delete Category'
+            ],
         ];
 
 

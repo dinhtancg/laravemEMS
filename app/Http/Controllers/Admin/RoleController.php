@@ -39,7 +39,8 @@ class RoleController extends Controller
             $role = null;
 
         }
-
+//        dd($role);
+//        dd(array_map(function ($a){return $a["id"];}, $role->permissions->toArray()));
         return view('admin.role.create',[
             'role' =>$role,
             'permissions' => Permission::all(),

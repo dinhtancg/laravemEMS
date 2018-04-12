@@ -32,24 +32,11 @@
                             <div class="form-group row">
                                 <label for="role" class="col-md-2 control-label">Permissions</label>
                                 <div class="col-md-10 ">
-                                    <select multiple="" name="permisions[]" class="form-control">
-                                        @foreach($permissions as $permission)
-
-                                            <option value="{{ $permission->id }}" {{ (collect(old('permisions'))->contains($permission->id)) ? 'selected':'' }}
-                                            {{($role) ? (in_array($permission->id, array_map(function ($a){return $a["id"];}, $role->permissions->toArray())) ? 'selected' : '') :'' }} >
-                                                {{ $permission->description }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    {{-- check box--}}
-                                    {{--@foreach($permissions as $permission)--}}
-
-                                        {{--<input type="checkbox" name="permisions[]" value="{{ $permission->id }}" {{ (collect(old('permisions'))->contains($permission->id)) ? 'selected':'' }}--}}
-                                                {{--{{--}}
-                                                 {{--($role) ? (in_array($permission->id, array_map(function ($a){return $a["id"];}, $role->permissions->toArray())) ? 'selected' : '') :'' }} >--}}
-                                        {{--{{ $permission->description }} <br>--}}
-                                        {{--</input>--}}
-                                    {{--@endforeach--}}
+                                    @foreach ($permissions as $permission)
+                                        <input  type="checkbox" name="permisions[]" value="{{ $permission ? old('id', $permission->id) : old('id', '')}}"
+                                                {{($role) ? (in_array($permission->id, array_map(function ($a){return $a["id"];}, $role->permissions->toArray())) ? 'checked' : '') :'' }}
+                                        > {{$permission->name}} <br>
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="form-group">

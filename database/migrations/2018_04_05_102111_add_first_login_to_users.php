@@ -14,7 +14,7 @@ class AddFirstLoginToUsers extends Migration
     public function up()
     {
         Schema::table('users', function($table) {
-            $table->boolean('first_login');
+            $table->boolean('first_login')->default(false);
         });
     }
 

@@ -68,7 +68,7 @@
     </header>
     @include('admin.layouts.admin.include.side_bar')
     <div class="content-wrapper">
-        @if (session('message'))
+        @if (session('success'))
             <div class="alert alert-success fade in">
                 <button class="close" data-dismiss="alert">×</button>
                 <i class="fa-fw fa fa-check"></i>

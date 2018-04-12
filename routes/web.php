@@ -27,13 +27,13 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function(){
         Route::get('edit/{id}', 'Admin\CategoryController@edit')->name('admin.category.edit')->middleware('can:category-edit');
         Route::delete('/{id}', 'Admin\CategoryController@destroy')->name('admin.category.destroy')->middleware('can:category-destroy');
     });
-    Route::group(['prefix' => 'permissions','middleware' => 'role:root'],function (){
-        Route::get('', 'Admin\PermissionController@index')->name('admin.permission.index')->middleware('can:permission-list');
-        Route::get('create','Admin\PermissionController@create')->name('admin.permission.create')->middleware('can:permission-create');
-        Route::post('create', 'Admin\PermissionController@createPermission')-> name('admin.permission.createPermission');
-        Route::get('edit/{id}', 'Admin\PermissionController@edit')->name('admin.permission.edit')->middleware('can:permission-edit');
-        Route::delete('/{id}', 'Admin\PermissionController@destroy')->name('admin.permission.destroy')->middleware('can:permission-destroy');
-    });
+//    Route::group(['prefix' => 'permissions','middleware' => 'role:root'],function (){
+//        Route::get('', 'Admin\PermissionController@index')->name('admin.permission.index')->middleware('can:permission-list');
+//        Route::get('create','Admin\PermissionController@create')->name('admin.permission.create')->middleware('can:permission-create');
+//        Route::post('create', 'Admin\PermissionController@createPermission')-> name('admin.permission.createPermission');
+//        Route::get('edit/{id}', 'Admin\PermissionController@edit')->name('admin.permission.edit')->middleware('can:permission-edit');
+//        Route::delete('/{id}', 'Admin\PermissionController@destroy')->name('admin.permission.destroy')->middleware('can:permission-destroy');
+//    });
     Route::group(['prefix' => 'roles','middleware' => 'role:root'],function (){
         Route::get('','Admin\RoleController@index')->name('admin.role.index')->middleware('can:role-list');
         Route::get('create','Admin\RoleController@create')->name('admin.role.create')->middleware('can:role-create');
@@ -45,11 +45,13 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function(){
     Route::group(['prefix' => 'articles'] ,function (){
         Route::get('', 'Admin\ArticleController@index')->name('admin.article.index')->middleware('can:article-list');
         Route::get('create','Admin\ArticleController@create')->name('admin.article.create')->middleware('can:article-create');
-        Route::post('create', 'Admin\ArticleController@createArticle');
+        Route::post('create', 'Admin\ArticleController@createArticle')->name('admin.article.createArticle');
         Route::get('edit/{id}', 'Admin\ArticleController@edit')->name('admin.article.edit')->middleware('can:article-edit');
         Route::delete('/{id}', 'Admin\ArticleController@destroy')->name('admin.article.destroy')->middleware('can:article-delete');
-        Route::post('/{id}','Admin\ArticleController@confirm')->name('admin.article.confirm')->middleware('can:article-confirm');
-        Route::post('/{id}','Admin\ArticleController@publish')->name('admin.article.publish')->middleware('can:article-publish');
+        Route::post('/reject/{id}','Admin\ArticleController@reject')->name('admin.article.reject')->middleware('can:article-reject');
+        Route::post('/confirm/{id}','Admin\ArticleController@confirm')->name('admin.article.confirm')->middleware('can:article-confirm');
+        Route::post('/publish/{id}','Admin\ArticleController@publish')->name('admin.article.publish')->middleware('can:article-publish');
+
 
     });
     Route::group(['prefix' => 'users','middleware' => 'role:root'],function (){

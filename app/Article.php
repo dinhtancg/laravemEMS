@@ -38,15 +38,15 @@ class Article extends Model
         if (!empty($search)) {
             $query->where('articles.title', 'LIKE', '%'.$search.'%');
         }
-        if (Auth::user()->roles[0]->slug == "editor"){
+        if (Auth::user()->hasRole('editor')){
             $query->where('articles.confirmed', '=', false)
                 ->where('articles.published', '=', false);
         }
-        if (Auth::user()->roles[0]->slug == "secrectory"){
-            $query->where('articles.confirmed', '=', true)
-            ->where('articles.published', '=', false);
+        if (Auth::user()->hasRole('secrectory')){
+            $query->where('articles.confirmed', '=', true);
+//            ->where('articles.published', '=', false);
         }
-        if (Auth::user()->roles[0]->slug == "author"){
+        if (Auth::user()->hasRole('author')){
             $query->where('articles.user_id', '=', Auth::user()->id);
         }
         $query->orderBy('articles.id', 'desc');

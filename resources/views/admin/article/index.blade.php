@@ -46,11 +46,19 @@
                                 <div> {{ $article->id }}</div>
                             </td>
                             @can('article-edit')
-                                <td class="table-text">
-                                    <a href="{{ route('admin.article.edit', $article->id) }}">{{$article->title}}</a>
+                                @role('author')
+                                <td class="table-text" >
+                                    <a href="{{ route('admin.article.edit', $article->id) }}"><span style="{{$article->reject_flag ? "color:red;": ''}}">{{$article->title}}</span></a>
                                 </td>
+                                @endrole
+                                @role('editor')
+                                <td class="table-text" >
+                                    <a href="{{ route('admin.article.edit', $article->id) }}"><span style="{{$article->reject_flag ? "color:red;": ''}}">{{$article->title}}</span></a>
+                                </td>
+                                @endrole
+
                             @else
-                                <td class="table-text">
+                                <td class="table-text" >
                                     {{$article->title}}
                                 </td>
                             @endcan
@@ -64,13 +72,6 @@
                                 <div>{{$article->created_at}}</div>
                             </td>
                             <td>
-                                @can('article-edit')
-                                    <p>
-                                        <a href="{{ route('admin.article.edit', $article->id) }}">
-                                            <button type="button" class="btn btn-primary btn-xs">Edit</button>
-                                        </a>
-                                    </p>
-                                @endcan
                                 @can('article-delete')
                                     <form class=" visible-lg-inline-block" action="{{ route('admin.article.destroy', $article->id) }}" method="POST">
                                         <input type="hidden" name="_method" value="DELETE">
