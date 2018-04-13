@@ -23,6 +23,6 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.layouts.admin.master');
+        return view('admin.layouts.admin.adminlayout');
     }
 }

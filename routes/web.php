@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/','HomeController@index')->name('index');
 
 Auth::routes();
 
@@ -50,10 +48,11 @@ Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function(){
         Route::get('create','Admin\UsersController@create')->name('admin.user.create');
         Route::post('create', 'Admin\UsersController@createUser')-> name('admin.user.createUser');
         Route::get('edit/{id}', 'Admin\UsersController@edit')->name('admin.user.edit');
-        Route::delete('/{id}', 'Admin\UsersController@destroy')->name('admin.user.destroy');
+        Route::delete('', 'Admin\UsersController@destroy')->name('admin.user.destroy');
     });
     Route::prefix('send-mail')->group(function (){
-        Route::get('','HomeController@sendMail')->name('admin.emails.email');
+        Route::get('','HomeController@sendMail')->name('admin.emails.welcomemail');
 
     });
+
 });

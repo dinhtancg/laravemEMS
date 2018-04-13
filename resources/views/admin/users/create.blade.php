@@ -50,20 +50,21 @@
                                 <label for="role" class="col-md-4 control-label">Role</label>
 
                                 <div class="col-md-6 ">
-                                    {{--<select multiple name="role" class="form-control">--}}
-                                        {{--<option></option>--}}
-                                        {{--@foreach($roles as $role)--}}
-                                            {{--<option value="{{ $role->id }}" > {{ $role->name }} </option>--}}
-                                        {{--@endforeach--}}
-                                    {{--</select>--}}
+
 
                                     <div class='form-group'>
                                         @foreach ($roles as $role)
-                                        <input  type="checkbox" name="roles[]" value="{{ $role ? old('id', $role->id) : old('id', '')}}"
+                                        <input  type="checkbox" id = "{{ $role->slug }}"name="roles[]" value="{{ $role ? old('id', $role->id) : old('id', '')}}"
                                         {{($users) ? (in_array($role->id, array_map(function ($a){return $a["id"];}, $users->roles->toArray())) ? 'checked' : '') :'' }}
                                                 > {{$role->name}} &nbsp;&nbsp;
                                         @endforeach
                                     </div>
+                                    <select id="categories" multiple name="category" class="form-control">
+                                    <option></option>
+                                    @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" > {{ $category->name }} </option>
+                                    @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -80,4 +81,7 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script src="{{ asset('js/backend/check_secretary.js') }}"></script>
 @endsection

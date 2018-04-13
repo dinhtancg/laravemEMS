@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Help;
-use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
+use App\Category;
 use Illuminate\Support\Facades\Hash;
-
+use App\Http\Controllers\EmailController;
 class UsersController extends Controller
 {
     /**
@@ -20,7 +20,8 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::with('roles')->paginate(5);
-        return view('admin.users.index', ['users' => $users]);
+        $count = User::count();
+        return view('admin.users.index', ['users' => $users, 'count' => $count]);
 
     }
 
@@ -37,9 +38,12 @@ class UsersController extends Controller
             $users = null;
         }
         $roles = Role::all();
+        $categories = Category::all();
+
         return view('admin.users.create',[
             'users' =>$users,
             'roles' =>$roles,
+            'categories' => $categories,
         ]);
     }
     /**
@@ -85,17 +89,19 @@ class UsersController extends Controller
         $password = Help::generateRandomString();
         $user->password = Hash::make($password);
 
-        $data=[];
-        $data['email']= $request->email;
-        $data['password']= $password;
-        HomeController::sendMail($data);
+
 
         $user->save();
         $user->roles()->sync($request->input('roles'));
         if (!$user->save()) {
             return redirect()->route('admin.user.index')->with('error', 'An error occurred, user has not been saved.');
         }
-
+        $data=[];
+        $data['email']= $request->email;
+        $data['password']= $password;
+        $data['name']= $request->name;
+        $data['roles']= $user->roles()->get()->pluck('name');
+        EmailController::sendMail($data);
 
         return redirect()->route('admin.user.index')->with('success', 'User has been save successfully.');
     }
@@ -150,15 +156,20 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $target = User::find($id);
-        if ($target) {
-            $target->delete();
+        $targets = User::whereIn('id', $request->checkbox)->get();
+//        dd($targets);
+        foreach($targets as $target){
+            if ($target) {
+//                dd($target);
+                $target->delete();
+                return redirect()->route('admin.user.index')
+                    ->with('success', 'User has been deleted successfully');
+            }
             return redirect()->route('admin.user.index')
-                ->with('success', 'User has been deleted successfully');
+                ->with('error', 'User not found');
         }
-        return redirect()->route('admin.user.index')
-            ->with('error', 'User not found');
+
     }
 }
